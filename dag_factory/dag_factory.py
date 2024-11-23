@@ -1,7 +1,8 @@
 from dag_factory.process_invoices import ProcessInvoices
 from dag_factory.process_messages import ProcessMessages
 
-class DAGFactory():  # pylint: disable=too-few-public-methods
+
+class DAGFactory:  # pylint: disable=too-few-public-methods
     """The DAG Factory Class"""
 
     def __init__(self, environment_config=None, organization_id=None):
@@ -10,10 +11,14 @@ class DAGFactory():  # pylint: disable=too-few-public-methods
 
     def create(self, dag_type, config: list):
         supported_dags = {
-            'ProcessInvoices': ProcessInvoices,
-            'ProcessMessages': ProcessMessages
+            "ProcessInvoices": ProcessInvoices,
+            "ProcessMessages": ProcessMessages,
         }
-        dag = supported_dags[dag_type](config=config, environment_config=self.environment_config, organization_id=self.organization_id)
+        dag = supported_dags[dag_type](
+            config=config,
+            environment_config=self.environment_config,
+            organization_id=self.organization_id,
+        )
         return dag
 
 
@@ -30,6 +35,6 @@ def reconfigure_subdag(parent_dag, sub_dag, sub_dag_name):
     Returns:
         airflow.models.DAG: The modified DAG object
     """
-    sub_dag.dag_id = parent_dag.dag_id + '.' + sub_dag_name
+    sub_dag.dag_id = parent_dag.dag_id + "." + sub_dag_name
     sub_dag.start_date = parent_dag.start_date
     return sub_dag
